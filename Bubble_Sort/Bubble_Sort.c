@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void bubbleSort(int *V, int  N )        //*V = vetor, N = tamanho do vetor
+void Bubble_Sort(int *V, int  N )        //*V = vetor, N = tamanho do vetor
 {
     int i, continua = 1, aux, fim=N;     
 
@@ -30,7 +30,7 @@ int main()
     for(int i = 0; i < 10; i++)
         printf("%d \n", vetorTeste[i]);
 
-    bubbleSort(vetorTeste, 9);
+    Bubble_Sort(vetorTeste, 9);
     
     printf("\n");
 
