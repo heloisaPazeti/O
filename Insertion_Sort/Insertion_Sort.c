@@ -1,11 +1,14 @@
 #include <stdio.h>
 
-void Insertion_Sort(int *V, int N)      // Vetor e tamanho
+void Insertion_Sort(int *V, int N)      		// Vetor e tamanho
 {
 	int i, j, aux;
+
+	// O i varre para direita o j para esquerda
+	// Eles vão permutando suas posiçõesd de acordo.
 	for(i=1; i<N; i++) 
 	{
-		aux = V[i];                     // move as cartas maiores para frente
+		aux = V[i];
 		for(j=i; (j>0) && (aux < V[j-1]); j--)
 		{
 			V[j] = V[j-1];
