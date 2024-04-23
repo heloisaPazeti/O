@@ -1,68 +1,95 @@
+// Heap Sort in C
+
 #include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 
-void Heap_Sort(int *V, int N);
-void Create_Heap(int *V, int inicio, int final);
+// Function to swap the position of two elements
 
-void Heap_Sort(int *V, int N)
+void swap(int* a, int* b)
 {
-	int i, aux;
-	for(i=(N-1)/2; i>=0; i--) // cria heap a partir dos dados fornecidos 
-	{
-		Create_Heap(V, i, N-1);
-	}
-	for(i=N-1; i>=1; i--) // coloca o maior elemento da heap na sua posição correspondente no array e reconstrói a heap
-	{
-		aux=V[0];
-		V[0]=V[i];
-		V[i]=aux;
-		Create_Heap(V, 0, i-1);
-	}
+
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
-void Create_Heap(int *V, int inicio, int final)
+// To heapify a subtree rooted with node i
+// which is an index in arr[].
+// n is size of heap
+void heapify(int arr[], int N, int i)
 {
-	int aux = V[inicio];
-    int i = 0;
-	int j = 2*inicio+1;
-	while(j<=final)
-	{
-		if(j<final) // verifica qual dos filhos de um mesmo pai é o maior
-		{
-			if(V[j]<V[j+1])
-			{
-				j=j+1;
-			}
-		}
-		if(aux<V[j]) // caso o filho seja maior que o pai, o filho se torna o pai (os elementos são trocados de posição
-		{
-			V[i] = V[j];
-			i=j;
-			j=2*i+1;
-		}
-		else
-		{
-			j=final+1;
-		}
-	}
-	V[i]=aux; // antigo pai ocupa o lugar do último filho analisado
+    // Find largest among root,
+    // left child and right child
+
+    // Initialize largest as root
+    int largest = i;
+
+    // left = 2*i + 1
+    int left = 2 * i + 1;
+
+    // right = 2*i + 2
+    int right = 2 * i + 2;
+
+    // If left child is larger than root
+    if (left < N && arr[left] > arr[largest])
+        largest = left;
+
+    // If right child is larger than largest
+    // so far
+    if (right < N && arr[right] > arr[largest])
+        largest = right;
+
+
+	//printf("i: %d\nLargest: %d\nLeft: %d\nRight: %d\n", i, largest, left, right);
+    // Swap and continue heapifying
+    // if root is not largest
+    // If largest is not root
+    if (largest != i) {
+
+        swap(&arr[i], &arr[largest]);
+
+        // Recursively heapify the affected
+        // sub-tree
+        heapify(arr, N, largest);
+    }
 }
 
+// Main function to do heap sort
+void heapSort(int arr[], int N)
+{
+    // Build max heap
+    for (int i = N / 2 - 1; i >= 0; i--)
+	{
+		heapify(arr, N, i);
+	}
+
+    // Heap sort
+    for (int i = N - 1; i >= 0; i--) {
+		
+        swap(&arr[0], &arr[i]);
+
+        // Heapify root element
+        // to get highest element at
+        // root again
+        heapify(arr, i, 0);
+    }
+}
+
+// A utility function to print array of size n
+void printArray(int arr[], int N)
+{
+    for (int i = 0; i < N; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+// Driver's code
 int main()
 {
-    int tamanho = 9;
-    int vetorTeste[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+    int arr[] = { 12, 11, 13, 5, 6, 7 };
+    int N = sizeof(arr) / sizeof(arr[0]);
 
-    for(int i = 0; i < 9; i++)
-        printf("%d \n", vetorTeste[i]);
-
-    Heap_Sort(vetorTeste, tamanho);
-    
-    printf("\n");
-
-    for(int i = 0; i < 9; i++)
-        printf("%d \n", vetorTeste[i]);
-
-    return 0;
+    // Function call
+    heapSort(arr, N);
+    printf("Sorted array is\n");
+    printArray(arr, N);
 }
